@@ -10,7 +10,7 @@ class Todos extends StatelessWidget {
   Widget build(BuildContext context) {
     if (context.read<TodoProvider>().todos.isEmpty) {
       return const Center(
-        child: Text('No Data Found  '),
+        child: Text('No Data Found'),
       );
     } else {
       return ListView.builder(
