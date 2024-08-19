@@ -3,11 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_todo/config.dart';
 import 'package:simple_todo/providers/todo_provider.dart';
 
-class Todos extends ConsumerWidget {
+class Todos extends ConsumerStatefulWidget {
   const Todos({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Todos> createState() {
+    return _TodosState();
+  }
+}
+
+class _TodosState extends ConsumerState<Todos> {
+  @override
+  Widget build(BuildContext context) {
     final todos = ref.watch(todoProvider);
     if (todos.isEmpty) {
       return const Center(
@@ -53,7 +60,9 @@ class Todos extends ConsumerWidget {
                       activeColor: const Color.fromARGB(255, 105, 94, 9),
                       value: todos[index].status,
                       onChanged: (newValue) {
-                        ref.read(todoProvider)[index].status = newValue!;
+                        setState(() {
+                          ref.read(todoProvider)[index].status = newValue!;
+                        });
                       }),
                   Text(todos[index].title),
                 ],

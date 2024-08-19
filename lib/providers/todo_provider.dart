@@ -13,6 +13,10 @@ class TodoNotifier extends StateNotifier<List<TodoModel>> {
       return todo.title != elt.title;
     }).toList();
   }
+
+  void check(TodoModel todo) {
+    todo.status = !todo.status;
+  }
 }
 
 final todoProvider =
