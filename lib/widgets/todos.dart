@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_todo/config.dart';
 import 'package:simple_todo/providers/todo_provider.dart';
 
-class Todos extends StatelessWidget {
+class Todos extends ConsumerWidget {
   const Todos({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    if (context.read<TodoProvider>().todos.isEmpty) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todos = ref.watch(todoProvider);
+    if (todos.isEmpty) {
       return const Center(
-        child: Text('No Data Found '),
+        child: Text('No Data Found'),
       );
     } else {
       return ListView.builder(
-        itemCount: context.watch<TodoProvider>().todos.length,
+        itemCount: todos.length,
         itemBuilder: (_, index) {
           return Dismissible(
             key: UniqueKey(),
             onDismissed: (_) {
-              context
-                  .read<TodoProvider>()
-                  .removeTodo(context.read<TodoProvider>().todos[index]);
+              ref.read(todoProvider.notifier).removeTodo(todos[index]);
             },
             direction: DismissDirection.endToStart,
             background: Container(
@@ -52,12 +51,11 @@ class Todos extends StatelessWidget {
                 children: [
                   Checkbox(
                       activeColor: const Color.fromARGB(255, 105, 94, 9),
-                      value: context.read<TodoProvider>().todos[index].status,
+                      value: todos[index].status,
                       onChanged: (newValue) {
-                        context.read<TodoProvider>().todos[index].status =
-                            newValue!;
+                        ref.read(todoProvider)[index].status = newValue!;
                       }),
-                  Text(context.read<TodoProvider>().todos[index].title),
+                  Text(todos[index].title),
                 ],
               ),
             ),

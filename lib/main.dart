@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_todo/config.dart';
-import 'package:simple_todo/providers/todo_provider.dart';
 import 'package:simple_todo/widgets/mydialog.dart';
 import 'package:simple_todo/widgets/todos.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,16 +17,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => TodoProvider(),
-        )
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Todo(),
-      ),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Todo(),
     );
   }
 }
